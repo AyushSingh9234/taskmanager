@@ -5,14 +5,15 @@ require("dotenv").config();
 
 const app = express();
 
+// ✅ CORS FIX
 app.use(cors({
   origin: "https://taskmanager-delta-blue.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
-app.options("*", cors());
+
 app.use(express.json());
 
+// routes
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/projects", require("./routes/projectRoutes"));
 app.use("/api/tasks", require("./routes/taskRoutes"));
