@@ -47,6 +47,9 @@ localStorage.setItem("user", JSON.stringify(res.data.user));
       <button onClick={handleLogin}>
         Login
       </button>
+      <p>
+  New user? <a href="/signup">Signup here</a>
+</p>
     </div>
   );
 }

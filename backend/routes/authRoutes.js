@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+
+
+// ✅ SIGNUP
 router.post("/signup", async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -20,7 +24,7 @@ router.post("/signup", async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role
+      role: role || "User" // default role
     });
 
     res.status(201).json({
@@ -34,8 +38,9 @@ router.post("/signup", async (req, res) => {
     });
   }
 });
-const jwt = require("jsonwebtoken");
 
+
+// ✅ LOGIN
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -54,7 +59,8 @@ router.post("/login", async (req, res) => {
 
     const token = jwt.sign(
       { id: user._id, role: user.role },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
     );
 
     res.json({
@@ -68,8 +74,19 @@ router.post("/login", async (req, res) => {
   }
 });
 
-module.exports = router;
+
+// ✅ GET ALL USERS
 router.get("/users", async (req, res) => {
-  const users = await User.find();
-  res.json(users);
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
 });
+
+
+// ✅ EXPORT (MUST BE LAST)
+module.exports = router;
