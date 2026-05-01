@@ -11,11 +11,12 @@ function Login() {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "https://your-app.up.railway.app/api/auth/login",
+        "https://taskmanager-production-ad18.up.railway.app/api/auth/login",
         { email, password }
       );
 
       localStorage.setItem("token", res.data.token);
+localStorage.setItem("user", JSON.stringify(res.data.user));
 
       nav("/dashboard");
 

@@ -4,88 +4,100 @@ import Navbar from "../components/Navbar";
 
 export default function Tasks() {
   const [tasks, setTasks] = useState([]);
-
   const [title, setTitle] = useState("");
   const [project, setProject] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
   const [projects, setProjects] = useState([]);
-const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("user")) || {};
 
+  const BASE_URL = "https://taskmanager-production-ad18.up.railway.app";
+
+  // ✅ FETCH TASKS
   const fetchTasks = async () => {
-    const res = await axios.get(
-      "https://taskmanager-production-ad18.up.railway.app/api/tasks",
-      {
+    try {
+      const res = await axios.get(`${BASE_URL}/api/tasks`, {
         headers: {
-          Authorization: localStorage.getItem("token")
-        }
-      }
-    );
-    const fetchProjects = async () => {
-  const res = await axios.get(
-    "https://taskmanager-production-ad18.up.railway.app/api/projects",
-    {
-      headers: {
-        Authorization: localStorage.getItem("token")
-      }
+          Authorization: localStorage.getItem("token"),
+        },
+      });
+      setTasks(res.data);
+    } catch (err) {
+      console.log(err);
     }
-  );
-  setProjects(res.data);
-};
-
-const fetchUsers = async () => {
-  const res = await axios.get(
-    "https://taskmanager-production-ad18.up.railway.app/api/auth/users",
-    {
-      headers: {
-        Authorization: localStorage.getItem("token")
-      }
-    }
-  );
-  setUsers(res.data);
-};
-
-    setTasks(res.data);
   };
 
+  // ✅ FETCH PROJECTS
+  const fetchProjects = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/api/projects`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
+      setProjects(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // ✅ FETCH USERS (FIXED ROUTE)
+  const fetchUsers = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/api/users`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
+      setUsers(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // ✅ RUN ALL
   useEffect(() => {
-  fetchTasks();
-  fetchProjects();
-  fetchUsers();
-}, []);
-
-  const updateStatus = async (id, status) => {
-    await axios.put(
-      `https://taskmanager-production-ad18.up.railway.app/api/tasks/${id}`,
-      { status },
-      {
-        headers: {
-          Authorization: localStorage.getItem("token")
-        }
-      }
-    );
-
     fetchTasks();
+    fetchProjects();
+    fetchUsers();
+  }, []);
+
+  // ✅ UPDATE STATUS
+  const updateStatus = async (id, status) => {
+    try {
+      await axios.put(
+        `${BASE_URL}/api/tasks/${id}`,
+        { status },
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      fetchTasks();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
+  // ✅ CREATE TASK
   const createTask = async () => {
     try {
       await axios.post(
-        "https://taskmanager-production-ad18.up.railway.app/api/tasks",
+        `${BASE_URL}/api/tasks`,
         {
           title,
           project,
-          assignedTo
+          assignedTo,
         },
         {
           headers: {
-            Authorization: localStorage.getItem("token")
-          }
+            Authorization: localStorage.getItem("token"),
+          },
         }
       );
 
-      // Clear inputs
       setTitle("");
       setProject("");
       setAssignedTo("");
@@ -117,24 +129,24 @@ const fetchUsers = async () => {
             <br /><br />
 
             <select onChange={(e) => setProject(e.target.value)}>
-  <option>Select Project</option>
-  {projects.map((p) => (
-    <option key={p._id} value={p._id}>
-      {p.title}
-    </option>
-  ))}
-</select>
+              <option>Select Project</option>
+              {projects.map((p) => (
+                <option key={p._id} value={p._id}>
+                  {p.title}
+                </option>
+              ))}
+            </select>
 
-<br /><br />
+            <br /><br />
 
-<select onChange={(e) => setAssignedTo(e.target.value)}>
-  <option>Select User</option>
-  {users.map((u) => (
-    <option key={u._id} value={u._id}>
-      {u.name}
-    </option>
-  ))}
-</select>
+            <select onChange={(e) => setAssignedTo(e.target.value)}>
+              <option>Select User</option>
+              {users.map((u) => (
+                <option key={u._id} value={u._id}>
+                  {u.name}
+                </option>
+              ))}
+            </select>
 
             <br /><br />
 
