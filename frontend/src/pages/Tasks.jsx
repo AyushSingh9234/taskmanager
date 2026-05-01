@@ -15,7 +15,7 @@ const [users, setUsers] = useState([]);
 
   const fetchTasks = async () => {
     const res = await axios.get(
-      "http://127.0.0.1:5000/api/tasks",
+      "https://taskmanager-production-ad18.up.railway.app/api/tasks",
       {
         headers: {
           Authorization: localStorage.getItem("token")
@@ -24,7 +24,7 @@ const [users, setUsers] = useState([]);
     );
     const fetchProjects = async () => {
   const res = await axios.get(
-    "http://127.0.0.1:5000/api/projects",
+    "https://taskmanager-production-ad18.up.railway.app/api/projects",
     {
       headers: {
         Authorization: localStorage.getItem("token")
@@ -36,7 +36,7 @@ const [users, setUsers] = useState([]);
 
 const fetchUsers = async () => {
   const res = await axios.get(
-    "http://127.0.0.1:5000/api/auth/users",
+    "https://taskmanager-production-ad18.up.railway.app/api/auth/users",
     {
       headers: {
         Authorization: localStorage.getItem("token")
@@ -57,7 +57,7 @@ const fetchUsers = async () => {
 
   const updateStatus = async (id, status) => {
     await axios.put(
-      `http://127.0.0.1:5000/api/tasks/${id}`,
+      `https://taskmanager-production-ad18.up.railway.app/api/tasks/${id}`,
       { status },
       {
         headers: {
@@ -72,7 +72,7 @@ const fetchUsers = async () => {
   const createTask = async () => {
     try {
       await axios.post(
-        "http://127.0.0.1:5000/api/tasks",
+        "https://taskmanager-production-ad18.up.railway.app/api/tasks",
         {
           title,
           project,

@@ -11,7 +11,7 @@ function Login() {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "http://127.0.0.1:5000/api/auth/login",
+        "https://your-app.up.railway.app/api/auth/login",
         { email, password }
       );
 

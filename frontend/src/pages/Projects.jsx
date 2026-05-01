@@ -7,7 +7,7 @@ export default function Projects() {
 
   const fetchProjects = async () => {
     const res = await axios.get(
-      "http://127.0.0.1:5000/api/projects",
+      "https://taskmanager-production-ad18.up.railway.app/api/projects",
       {
         headers: {
           Authorization: localStorage.getItem("token")

@@ -8,7 +8,7 @@ function Dashboard() {
   useEffect(() => {
     const getDashboard = async () => {
       const res = await axios.get(
-        "http://127.0.0.1:5000/api/dashboard",
+        "taskmanager-production-ad18.up.railway.app",
         {
           headers: {
             Authorization: localStorage.getItem("token")
